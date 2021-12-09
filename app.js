@@ -1,5 +1,7 @@
-const { response } = require('express');
+//const { response } = require('express');
 const express = require ('express');
+const morgan = require ('morgan');
+
 
 //express app 
 const app = express();
@@ -11,19 +13,23 @@ app.set('view engine', 'ejs');
 app.listen(3000);
 
 
-//MIDDLEWARE
-app.use((req, res, next) => {
-    console.log('new request made:');
-    console.log('host', req.hostname);
-    console.log('path', req.path);
-    console.log('method', req.method);
-    next();
-});
+//MIDDLEWARE -- SUBSTITUIDO PELO MORGAN
+// app.use((req, res, next) => {
+//     console.log('new request made:');
+//     console.log('host', req.hostname);
+//     console.log('path', req.path);
+//     console.log('method', req.method);
+//     next();
+// });
 
-app.use((req, res, next) => {
-    console.log('in the next middleware');
-    next();
-});
+// app.use((req, res, next) => {
+//     console.log('in the next middleware');
+//     next();
+// });
+
+//midleware and statci files
+app.use(express.static('public'));
+app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
     const blogs = [

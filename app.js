@@ -10,6 +10,30 @@ app.set('view engine', 'ejs');
 //listen for requests port 3000
 app.listen(3000);
 
+
+//MIDDLEWARE
+app.use((req, res, next) => {
+    console.log('new request made:');
+    console.log('host', req.hostname);
+    console.log('path', req.path);
+    console.log('method', req.method);
+    next();
+});
+
+app.use((req, res, next) => {
+    console.log('in the next middleware');
+    next();
+});
+
+app.get('/', (req, res) => {
+    const blogs = [
+      {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+      {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+      {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    ];
+    res.render('index', { title: 'Home', blogs });
+  });
+
 app.get('/',(req, res) => {
     
     // res.send('<p>home page</p>'); //express method

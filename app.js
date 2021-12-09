@@ -9,6 +9,13 @@ app.listen(3000);
 
 app.get('/',(req, res) => {
     
-    res.send('<p>home page</p>'); //express method
+    // res.send('<p>home page</p>'); //express method
+    res.sendFile('./views/index.html', { root: __dirname }); //(relative path, root folder)
+
+});
+
+app.get('/about',(req, res) => {
+    
+    res.sendFile('./views/about.html', { root: __dirname }); //(relative path, root folder)
 
 });

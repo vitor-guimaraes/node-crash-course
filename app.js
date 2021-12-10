@@ -52,8 +52,47 @@ app.use(express.static('public'));
 app.use(morgan('dev'));
 
 
+//ROUTES
+app.get('/', (req, res) => {
+    // const blogs = [
+    //     {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    //     {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    //     {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
+    //   ];
+    //   res.render('index', { title: 'Home', blogs });
+
+    res.redirect('/blogs')
+  });
+
+app.get('/',(req, res) => {
+    
+    // res.send('<p>home page</p>'); //express method
+    //res.sendFile('./views/index.html', { root: __dirname }); //(relative path, root folder)
+
+    res.render('index');
+
+});
+
+app.get('/about',(req, res) => {
+    
+    // res.sendFile('./views/about.html', { root: __dirname }); //(relative path, root folder)
+
+    res.render('about');
+
+});
 
 //mongo routes
+app.get('/blogs', (req, res) => {
+    Blog.find().sort({ createdAt: -1 })
+    .then((result) => {
+        res.render('index', { title: 'All blogs', blogs: result })
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+});
+
+
 app.get('/add-blog', (req, res) => {
     const blog = new Blog({
         title: 'new blog 2',
@@ -88,32 +127,6 @@ app.get('/single-blog', (req, res) => {
     .catch((err) => {
         console.log(err)
     });
-});
-
-app.get('/', (req, res) => {
-    const blogs = [
-      {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-      {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-      {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    ];
-    res.render('index', { title: 'Home', blogs });
-  });
-
-app.get('/',(req, res) => {
-    
-    // res.send('<p>home page</p>'); //express method
-    //res.sendFile('./views/index.html', { root: __dirname }); //(relative path, root folder)
-
-    res.render('index');
-
-});
-
-app.get('/about',(req, res) => {
-    
-    // res.sendFile('./views/about.html', { root: __dirname }); //(relative path, root folder)
-
-    res.render('about');
-
 });
 
 

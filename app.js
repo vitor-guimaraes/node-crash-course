@@ -9,23 +9,26 @@ const { result } = require('lodash');
 //express app 
 const app = express();
 
-//CONNECT TO MONGODB
+//CONNECT TO MONGODB//
+
 //mongodb+srv://<username>:<password>@cluster0.8bj40.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
 //mongoose.connect(mongodb+srv://clusterAnything.mongodb.net/test?retryWrites=true&w=majority, { user: process.env.MONGO_USER, pass: process.env.MONGO_PASSWORD, useNewUrlParser: true, useUnifiedTopology: true })
 //mongoose.connect('mongodb+srv://cluster0.8bj40.mongodb.net/node-netninja?retryWrites=true&w=majority', { user: process.env.netninja, pass: process.env.senha, useNewUrlParser: true, useUnifiedTopology: true })
 
-const dbURI = 'mongodb+srv://nentninja:senha@cluster0.8bj40.mongodb.net/node-netninja?retryWrites=true&w=majority';
+const dbUser = 'netninja';
+const dbPassword = 'password1234';
+const dbURI = `mongodb+srv://${dbUser}:${dbPassword}@cluster0.8bj40.mongodb.net/node-netninja?retryWrites=true&w=majority`;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then((result) => app.listen(3000))
+    .then((result) => console.log('listening on port 3000'))
     .catch((err) => console.log(err));
-
 
 
 //register view engine
 app.set('view engine', 'ejs');
 
 //listen for requests port 3000
-//app.listen(3000);
+app.listen(3000);
 
 
 //MIDDLEWARE -- SUBSTITUIDO PELO MORGAN

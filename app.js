@@ -123,6 +123,19 @@ app.get('/blogs/:id', (req, res) => {
         });
 })
 
+//DELETE REQUEST
+app.delete('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+    
+    Blog.findByIdAndDelete(id)
+        .then(result => {
+            res.json({ redirect:'/blogs' });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+})
+
 app.get('/add-blog', (req, res) => {
     const blog = new Blog({
         title: 'new blog 2',

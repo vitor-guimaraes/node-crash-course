@@ -110,6 +110,19 @@ app.post('/blogs', async (req, res) => {
         });
 });
 
+
+//GET REQUEST
+app.get('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+    Blog.findById(id)
+        .then(result => {
+            res.render('details', { blog: result, title: 'Blog Details' });
+        })
+        .catch(err =>{
+            console.log(err)
+        });
+})
+
 app.get('/add-blog', (req, res) => {
     const blog = new Blog({
         title: 'new blog 2',

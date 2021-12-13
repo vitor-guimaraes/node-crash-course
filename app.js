@@ -5,6 +5,7 @@ const mongoose = require ('mongoose');
 const { result } = require('lodash');
 
 const Blog = require('./models/blog');
+const { post } = require('../deved/routes/posts');
 
 
 
@@ -50,6 +51,7 @@ app.listen(3000);
 //midleware and static files
 app.use(express.static('public'));
 app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: true }));
 
 
 //ROUTES
@@ -81,9 +83,11 @@ app.get('/about',(req, res) => {
 
 });
 
-//mongo routes
+
+
+//ROUTES
 app.get('/blogs', (req, res) => {
-    Blog.find().sort({ createdAt: -1 })
+    Blog.find().sort({ createdAt: -1 }) //ordenar resultados
     .then((result) => {
         res.render('index', { title: 'All blogs', blogs: result })
     })
@@ -92,6 +96,19 @@ app.get('/blogs', (req, res) => {
     })
 });
 
+//AULA10
+//POST REQUEST
+app.post('/blogs', async (req, res) => {
+    const blog = new Blog(req.body);
+
+    blog.save()
+        .then((result) => {
+            res.redirect('/blogs');
+        })
+        .catch ((err) => {
+        console.log(err);
+        });
+});
 
 app.get('/add-blog', (req, res) => {
     const blog = new Blog({
@@ -132,10 +149,8 @@ app.get('/single-blog', (req, res) => {
 
 //REDIRECTS
 //about us
-// app.get('/about-us',(req, res) => {
-    
+// app.get('/about-us',(req, res) => { 
 //     res.redirect('/about');
-
 // });
 
 app.get('/blogs/create', (req, res) => {
@@ -143,10 +158,8 @@ app.get('/blogs/create', (req, res) => {
 })
 
 //404 page
-//app.use é similar a um catch all, tem queficar no fim da página
+//app.use é similar a um catch all, tem que ficar no fim da página
 app.use((req, res) => { 
     // res.status(404).sendFile('./views/404.html', { root: __dirname })
-
     res.status(404).render('404')
-
 }); 

@@ -1,12 +1,12 @@
 //const { response } = require('express');
-const express = require ('express');
-const morgan = require ('morgan');
-const mongoose = require ('mongoose');
+
+const express = require('express');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const blogRoutes = require('./routes/blogRoutes');
+
 const { result } = require('lodash');
-
-const Blog = require('./models/blog');
 const { post } = require('../deved/routes/posts');
-
 
 
 //express app 
@@ -84,94 +84,8 @@ app.get('/about',(req, res) => {
 });
 
 
-
-//ROUTES
-app.get('/blogs', (req, res) => {
-    Blog.find().sort({ createdAt: -1 }) //ordenar resultados
-    .then((result) => {
-        res.render('index', { title: 'All blogs', blogs: result })
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-});
-
 //AULA10
-//POST REQUEST
-app.post('/blogs', async (req, res) => {
-    const blog = new Blog(req.body);
-
-    blog.save()
-        .then((result) => {
-            res.redirect('/blogs');
-        })
-        .catch ((err) => {
-        console.log(err);
-        });
-});
-
-
-//GET REQUEST
-app.get('/blogs/:id', (req, res) => {
-    const id = req.params.id;
-    Blog.findById(id)
-        .then(result => {
-            res.render('details', { blog: result, title: 'Blog Details' });
-        })
-        .catch(err =>{
-            console.log(err)
-        });
-})
-
-//DELETE REQUEST
-app.delete('/blogs/:id', (req, res) => {
-    const id = req.params.id;
-    
-    Blog.findByIdAndDelete(id)
-        .then(result => {
-            res.json({ redirect:'/blogs' });
-        })
-        .catch(err => {
-            console.log(err);
-        })
-})
-
-app.get('/add-blog', (req, res) => {
-    const blog = new Blog({
-        title: 'new blog 2',
-        snippet: 'about my new blog',
-        body: 'more about my new blog'
-    });
-
-    blog.save()
-        .then((result) => {
-            res.send(result)
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-app.get('/all-blogs', (req, res) => {
-    Blog.find()
-    .then((result) => {
-        res.send(result);
-    })
-    .catch((err) => {
-        console.log(err)
-    });
-});
-
-app.get('/single-blog', (req, res) => {
-    Blog.findById('61b3acd6a25886e588fea789')
-    .then((result) => {
-        res.send(result);
-    })
-    .catch((err) => {
-        console.log(err)
-    });
-});
-
+//ROTAS AULA 10 MOVIDAS PARA blogRoutes
 
 //REDIRECTS
 //about us
@@ -179,9 +93,8 @@ app.get('/single-blog', (req, res) => {
 //     res.redirect('/about');
 // });
 
-app.get('/blogs/create', (req, res) => {
-    res.render('create');
-})
+//BLOGROUTES
+app.use('/blogs', blogRoutes)
 
 //404 page
 //app.use é similar a um catch all, tem que ficar no fim da página
